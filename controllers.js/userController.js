@@ -4,10 +4,10 @@ const expressAsyncHandler = require('express-async-handler');
 const loginController = () => {};
 
 const registerController = expressAsyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { Name, email, password } = req.body;
 
   //checking all the fields
-  if (!name || !email || !password) {
+  if (!Name || !email || !password) {
     return res.status(400).json({ message: 'Please fill all the fields' });
   }
 
@@ -17,13 +17,13 @@ const registerController = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'User already exists' });
   }
   //name preExisting
-  const userNameExists = await User.findOne({ name });
+  const userNameExists = await User.findOne({ Name });
   if (userNameExists) {
     return res.status(400).json({ message: 'Name already exists' });
   }
 
   //create entry as new user in db
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ Name, email, password });
 });
 
 module.exports = {

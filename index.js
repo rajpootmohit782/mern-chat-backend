@@ -5,9 +5,11 @@ const path = require('path');
 const dotenv = require('dotenv');
 const userRouter = require('./Routes/userRoutes');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+
 
 app.use(cors());
-
+app.use(bodyParser.json());
 dotenv.config();
 app.use(express.static('static'));
 
