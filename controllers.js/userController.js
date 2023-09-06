@@ -7,7 +7,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
   const { Name, password } = req.body;
 
   const user = await User.findOne({ Name });
-
+  console.log(await user.matchPassword(password));
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
