@@ -3,7 +3,23 @@ const User = require('../models/userModel');
 const expressAsyncHandler = require('express-async-handler');
 const generateToken = require('../Config/generateToken');
 
-const loginController = () => {};
+const loginController = expressAsyncHandler(async (req, res) => {
+  const { Name, password } = req.body;
+
+  const user = await User.findOne({ Name });
+
+  if (user && (await user.matchPassword(password))) {
+    res.json({
+      _id: user._id,
+      Name: user.Name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401).json({ message: 'Invalid Name or password' });
+  }
+});
 
 const registerController = expressAsyncHandler(async (req, res) => {
   const { Name, email, password } = req.body;
