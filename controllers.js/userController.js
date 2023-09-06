@@ -1,6 +1,8 @@
 const express = require('express');
 const User = require('../models/userModel');
 const expressAsyncHandler = require('express-async-handler');
+const generateToken = require('../Config/generateToken');
+
 const loginController = () => {};
 
 const registerController = expressAsyncHandler(async (req, res) => {
@@ -24,6 +26,17 @@ const registerController = expressAsyncHandler(async (req, res) => {
 
   //create entry as new user in db
   const user = await User.create({ Name, email, password });
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      Name: user.Name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(402).json({ message: 'Invalid user data' });
+  }
 });
 
 module.exports = {
