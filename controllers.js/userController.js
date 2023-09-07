@@ -55,7 +55,22 @@ const registerController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const fetchAllUsersController = expressAsyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { Name: { $regex: req.query.search, $options: 'i' } },
+          { email: { $regex: req.query.search, $options: 'i' } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.send(users);
+});
+
 module.exports = {
   loginController,
   registerController,
+  fetchAllUsersController,
 };
