@@ -5,6 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const userRouter = require('./Routes/userRoutes');
 const chatRouter = require('./Routes/chatRoutes');
+const messageRouter = require('./Routes/messageRoutes');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -20,6 +21,7 @@ const port = process.env.PORT || 3000;
 
 app.use('/user', userRouter);
 app.use('/chat', chatRouter);
+app.use('/message', messageRouter);
 
 const connectDb = () => {
   try {
