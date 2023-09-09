@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require('dotenv');
 const userRouter = require('./Routes/userRoutes');
+const chatRouter = require('./Routes/chatRoutes');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.use('/user', userRouter);
+app.use('/chat', chatRouter);
 
 const connectDb = () => {
   try {
