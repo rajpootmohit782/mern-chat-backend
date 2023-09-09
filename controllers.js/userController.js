@@ -56,7 +56,9 @@ const registerController = expressAsyncHandler(async (req, res) => {
 });
 
 const fetchAllUsersController = expressAsyncHandler(async (req, res) => {
+  console.log(req.userId)
   const keyword = req.query.search
+ 
     ? {
         $or: [
           { Name: { $regex: req.query.search, $options: 'i' } },
@@ -65,8 +67,9 @@ const fetchAllUsersController = expressAsyncHandler(async (req, res) => {
       }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  const users = await User.find(keyword).find({ _id: { $ne: req.userId } });
   res.send(users);
+//  console.log(users)
 });
 
 module.exports = {
