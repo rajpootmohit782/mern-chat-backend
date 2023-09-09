@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 
 const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;
-
+console.log("ans",userId)
   if (!userId) {
     console.log('UserId param not sent with request');
     return res.sendStatus(400);
@@ -13,7 +13,7 @@ const accessChat = asyncHandler(async (req, res) => {
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-      { users: { $elemMatch: { $eq: req.user._id } } },
+      
       { users: { $elemMatch: { $eq: userId } } },
     ],
   })
@@ -32,7 +32,7 @@ const accessChat = asyncHandler(async (req, res) => {
     var chatData = {
       chatName: 'sender',
       isGroupChat: false,
-      users: [req.user._id, userId],
+      users: [ userId],
     };
     try {
       const createdChat = await Chat.create(chatData);
