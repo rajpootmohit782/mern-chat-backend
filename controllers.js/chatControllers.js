@@ -3,8 +3,10 @@ const Chat = require('../models/chatModel');
 const User = require('../models/userModel');
 
 const accessChat = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
-console.log("ans",userId)
+  const { userId, chatId } = req.body;
+  console.log(userId,chatId)
+  const user2 = chatId;
+  console.log('ans', userId);
   if (!userId) {
     console.log('UserId param not sent with request');
     return res.sendStatus(400);
@@ -13,8 +15,8 @@ console.log("ans",userId)
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-      
       { users: { $elemMatch: { $eq: userId } } },
+      { users: { $elemMatch: { $eq: user2 } } },
     ],
   })
 
@@ -32,7 +34,7 @@ console.log("ans",userId)
     var chatData = {
       chatName: 'sender',
       isGroupChat: false,
-      users: [ userId],
+      users: [userId, user2],
     };
     try {
       const createdChat = await Chat.create(chatData);
@@ -48,8 +50,12 @@ console.log("ans",userId)
 });
 
 const fetchChats = asyncHandler(async (req, res) => {
+  // Extract userId from the custom header 'X-User-ID'
+  const userId = req.headers['x-user-id'];
+  console.log(userId)
+
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    Chat.find({ users: { $elemMatch: { $eq: userId } } })
       .populate('users', '-password')
       .populate('groupAdmin', '-password')
       .populate('latestMessage')
@@ -60,11 +66,13 @@ const fetchChats = asyncHandler(async (req, res) => {
           select: 'Name email',
         });
         res.status(200).send(results);
+        console.log(results)
       });
   } catch (error) {
     res.status(400).send(error.message);
   }
 });
+
 
 const fetchGroups = asyncHandler(async (req, res) => {
   // Your code for fetching groups goes here

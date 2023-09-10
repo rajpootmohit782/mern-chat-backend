@@ -56,7 +56,7 @@ const registerController = expressAsyncHandler(async (req, res) => {
 });
 
 const fetchAllUsersController = expressAsyncHandler(async (req, res) => {
-  console.log(req.userId)
+  //console.log("fet",req.param)
   const keyword = req.query.search
  
     ? {

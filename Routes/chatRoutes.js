@@ -10,7 +10,7 @@ const {
 const router = require('express').Router();
 
 router.route('/m').post(accessChat);
-router.route('/').get(fetchChats);
+router.route('/fetch').get(fetchChats);
 router.route('/group').post(createGroupChat);
 router.route('/group').get(fetchGroups);
 router.route('/group/exit').put(groupExit);
